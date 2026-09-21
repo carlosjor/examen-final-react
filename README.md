@@ -1,14 +1,16 @@
 # Examen Final - Programación de Componentes
 
-Proyecto desarrollado como parte del **Examen Final de la asignatura Programación de Componentes - IPLACEX**.
+Proyecto desarrollado para la evaluación final de la asignatura **Programación de Componentes - IPLACEX**.
 
-La aplicación fue desarrollada con React y permite demostrar el uso de componentes, propiedades, estados, eventos, formularios, validaciones, navegación mediante rutas, servicios de Firebase y generación de una aplicación Android mediante Cordova.
+La solución corresponde a una aplicación desarrollada con React que integra componentes, manejo de estado, comunicación mediante props, validación de formularios, Firebase Firestore, Firebase Authentication, Bootstrap y generación de una aplicación Android mediante Apache Cordova.
+
+La aplicación web se encuentra publicada en Netlify, mientras que el código fuente y la versión APK Release firmada se encuentran disponibles en el repositorio de GitHub.
 
 ---
 
 ## 1. Tecnologías utilizadas
 
-### Desarrollo web
+### Aplicación web
 
 - React
 - Vite
@@ -17,9 +19,8 @@ La aplicación fue desarrollada con React y permite demostrar el uso de componen
 - React Router
 - Simple React Validator
 
-### Servicios en la nube
+### Servicios Firebase
 
-- Firebase
 - Firebase Firestore
 - Firebase Authentication
 - Firebase Storage (interfaz y validaciones)
@@ -27,101 +28,166 @@ La aplicación fue desarrollada con React y permite demostrar el uso de componen
 ### Aplicación Android
 
 - Apache Cordova
-- Cordova Android
+- Cordova Android 15.1.0
 - Android SDK
-- Gradle
-- Java JDK
-- Android Build Tools
-- Zipalign
-- APK Signer
+- JDK 17
+- Gradle 8.14.2
+- Android Build Tools 36.0.0
+
+### Control de versiones y despliegue
+
+- Git
+- GitHub
+- Netlify
 
 ---
 
-## 2. Instalación del proyecto
+## 2. Repositorio
 
-### Clonar el repositorio
+El código fuente del proyecto se encuentra disponible en GitHub:
+
+https://github.com/carlosjor/examen-final-react
+
+Para clonar el repositorio:
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/carlosjor/examen-final-react.git
 ```
 
-### Ingresar al proyecto
+Luego ingresar al proyecto:
 
 ```bash
 cd examen-final-react
 ```
 
-### Instalar las dependencias
+---
+
+## 3. Instalación del proyecto
+
+Instalar las dependencias:
 
 ```bash
 npm install
 ```
 
-### Ejecutar en modo desarrollo
+Ejecutar el proyecto en modo desarrollo:
 
 ```bash
 npm run dev
 ```
 
-Vite iniciará el servidor local de desarrollo y mostrará en la terminal la dirección desde la cual se puede acceder a la aplicación.
+Generar la versión de producción:
 
----
-
-## 3. Variables de entorno
-
-La aplicación utiliza variables de entorno para almacenar la configuración necesaria para conectarse a Firebase.
-
-Se debe crear un archivo `.env` en la raíz del proyecto con la siguiente estructura:
-
-```env
-VITE_FIREBASE_API_KEY=API_KEY
-VITE_FIREBASE_AUTH_DOMAIN=AUTH_DOMAIN
-VITE_FIREBASE_PROJECT_ID=PROJECT_ID
-VITE_FIREBASE_STORAGE_BUCKET=STORAGE_BUCKET
-VITE_FIREBASE_MESSAGING_SENDER_ID=MESSAGING_SENDER_ID
-VITE_FIREBASE_APP_ID=APP_ID
+```bash
+npm run build
 ```
 
-Por razones de seguridad, el archivo `.env` se encuentra excluido del repositorio mediante `.gitignore`.
-
----
-
-# Funcionalidades implementadas
-
-## 4. Productos y carrito de compras
-
-La aplicación contiene un componente padre encargado de administrar el listado de productos y el estado del carrito de compras.
-
-Cada producto es representado mediante un componente hijo.
-
-Se implementaron los siguientes conceptos:
-
-- Renderizado dinámico de productos mediante `map()`.
-- Comunicación padre-hijo mediante `props`.
-- Comunicación hijo-padre mediante funciones callback.
-- Manejo del estado mediante `this.state`.
-- Actualización del estado mediante `this.setState()`.
-- Manejo de eventos.
-- Agregar productos al carrito.
-- Aumentar la cantidad de un producto.
-- Disminuir la cantidad de un producto.
-- Eliminar productos del carrito.
-- Cálculo automático de subtotales y total del carrito.
-
-### Componentes principales
+La compilación de producción se genera en el directorio:
 
 ```text
-ListaProductos.jsx
-Producto.jsx
+dist/
 ```
-
-`ListaProductos` corresponde al componente padre y `Producto` corresponde al componente hijo.
 
 ---
 
-## 5. Registro de clientes
+## 4. Configuración de Firebase
 
-Se implementó un formulario React para realizar el registro de clientes.
+La aplicación utiliza Firebase para Firestore y Authentication.
+
+La configuración se obtiene mediante variables de entorno definidas en un archivo `.env` local:
+
+```text
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+Por motivos de seguridad y configuración del entorno, el archivo `.env` no se encuentra versionado en el repositorio.
+
+La inicialización de Firebase se encuentra centralizada en:
+
+```text
+src/firebase.js
+```
+
+---
+
+## 5. Listado de productos
+
+La aplicación implementa un listado de productos utilizando componentes React.
+
+El componente principal mantiene la información de los productos y el estado del carrito.
+
+Cada producto es representado mediante un componente hijo independiente.
+
+Los productos son recorridos y renderizados utilizando `map()`.
+
+Archivos principales:
+
+```text
+src/components/ListaProductos.jsx
+src/components/Producto.jsx
+```
+
+---
+
+## 6. Comunicación entre componentes
+
+La comunicación entre el componente padre y los componentes hijos se realiza mediante `props`.
+
+El componente padre entrega al componente `Producto`:
+
+- Información del producto.
+- Función para agregar el producto al carrito.
+
+El componente hijo utiliza la función recibida para comunicar la acción al componente padre.
+
+De esta manera se implementa comunicación:
+
+```text
+Padre -> Hijo
+Hijo -> Padre
+```
+
+---
+
+## 7. Carrito de compras
+
+El carrito de compras es administrado mediante el estado del componente.
+
+Se utiliza:
+
+```javascript
+this.setState({})
+```
+
+para actualizar dinámicamente la información.
+
+El carrito permite:
+
+- Agregar productos.
+- Incrementar cantidades.
+- Disminuir cantidades.
+- Eliminar productos.
+- Calcular cantidad total.
+- Calcular precio total.
+
+La interfaz se actualiza automáticamente cada vez que cambia el estado.
+
+---
+
+## 8. Formulario de registro
+
+La aplicación incluye un formulario de registro de clientes.
+
+Archivo principal:
+
+```text
+src/components/Formulario.jsx
+```
 
 El formulario contiene los siguientes campos:
 
@@ -130,444 +196,445 @@ El formulario contiene los siguientes campos:
 - Teléfono.
 - Mensaje.
 
-Las validaciones fueron implementadas utilizando **Simple React Validator**.
+---
 
-Cuando los datos ingresados cumplen las validaciones, son almacenados en Firebase Firestore.
+## 9. Validación del formulario
 
-### Colección utilizada
+La validación se implementa mediante:
+
+```text
+simple-react-validator
+```
+
+Se realizan validaciones antes de almacenar los datos.
+
+Entre las reglas utilizadas se encuentran:
+
+- Campos obligatorios.
+- Validación de correo electrónico.
+- Longitud mínima del nombre.
+- Longitud mínima del teléfono.
+- Longitud mínima del mensaje.
+
+Si los datos no cumplen las reglas, se muestran mensajes de validación al usuario.
+
+---
+
+## 10. Firebase Firestore
+
+Cuando el formulario contiene información válida, los datos son almacenados en Firebase Firestore.
+
+La colección utilizada es:
 
 ```text
 clientes
 ```
 
-Cada registro es almacenado con un identificador generado automáticamente por Firestore.
+Cada documento almacena:
 
-Además de los datos ingresados en el formulario, se registra la fecha correspondiente al almacenamiento de la información.
+- Nombre.
+- Correo electrónico.
+- Teléfono.
+- Mensaje.
+- Fecha de registro.
+
+La fecha se registra mediante un timestamp generado por Firebase.
 
 ---
 
-## 6. Firebase Authentication
+## 11. Firebase Authentication
 
-La aplicación utiliza **Firebase Authentication** mediante el proveedor de correo electrónico y contraseña.
+La aplicación incorpora autenticación mediante Firebase Authentication.
 
-Se implementaron las siguientes funcionalidades:
-
-- Creación de usuarios.
-- Inicio de sesión.
-- Detección del usuario autenticado.
-- Cierre de sesión.
-- Manejo de errores de autenticación.
-
-También se utilizan métodos del ciclo de vida de componentes React para controlar los cambios en el estado de autenticación.
-
-El componente correspondiente es:
+Archivo principal:
 
 ```text
-Autenticacion.jsx
+src/components/Autenticacion.jsx
+```
+
+Se implementaron las siguientes operaciones:
+
+- Creación de usuarios mediante correo electrónico y contraseña.
+- Inicio de sesión.
+- Cierre de sesión.
+- Detección del estado actual de autenticación.
+
+La aplicación actualiza la interfaz de acuerdo con el estado de la sesión.
+
+---
+
+## 12. Firebase Storage
+
+La aplicación incluye una interfaz para la selección y validación de archivos.
+
+Archivo principal:
+
+```text
+src/components/Almacenamiento.jsx
+```
+
+Se implementaron validaciones para:
+
+- Archivos JPG.
+- Archivos PNG.
+- Documentos PDF.
+- Tamaño máximo de 5 MB.
+
+La interfaz muestra:
+
+- Nombre del archivo.
+- Tipo de archivo.
+- Tamaño del archivo.
+
+Firebase Storage requiere un bucket habilitado en el proyecto Firebase. En este proyecto académico el servicio de almacenamiento no se encuentra habilitado debido al requerimiento de facturación del proyecto Firebase utilizado.
+
+Por este motivo, se implementó la interfaz y las validaciones correspondientes, mientras que la acción de carga permanece deshabilitada.
+
+---
+
+## 13. Navegación
+
+La aplicación utiliza React Router para administrar la navegación.
+
+Se utiliza `HashRouter` para mantener compatibilidad tanto con el despliegue web como con la ejecución de la aplicación mediante Cordova.
+
+Las secciones disponibles son:
+
+- Productos.
+- Registro de clientes.
+- Acceso.
+- Archivos.
+
+Las rutas utilizadas son:
+
+```text
+/
+#/registro
+#/acceso
+#/archivos
 ```
 
 ---
 
-## 7. Firebase Storage
+## 14. Bootstrap
 
-Se desarrolló una interfaz destinada al manejo de archivos mediante Firebase Storage.
+Bootstrap se utiliza para construir la interfaz visual de la aplicación.
 
-La pantalla permite:
-
-- Seleccionar archivos.
-- Validar archivos JPG.
-- Validar archivos PNG.
-- Validar archivos PDF.
-- Validar un tamaño máximo de 5 MB.
-- Mostrar el nombre del archivo seleccionado.
-- Mostrar el tipo del archivo.
-- Mostrar el tamaño del archivo.
-
-### Limitación del entorno académico
-
-La carga efectiva del archivo a Firebase Storage no se encuentra habilitada debido a que el proyecto Firebase utilizado no dispone de un bucket de Storage habilitado sin activar facturación.
-
-Por este motivo, se implementó la interfaz y las validaciones correspondientes, pero el botón de carga permanece deshabilitado para evitar errores durante la ejecución.
-
-Esta situación se informa también directamente en la interfaz de la aplicación.
-
----
-
-## 8. Navegación
-
-La aplicación utiliza **React Router** para navegar entre sus diferentes funcionalidades.
-
-Para mantener compatibilidad entre la versión web y la aplicación ejecutada mediante Cordova se utiliza `HashRouter`.
-
-Las rutas implementadas son:
-
-| Ruta | Funcionalidad |
-| --- | --- |
-| `/` | Productos y carrito de compras |
-| `/registro` | Registro de clientes |
-| `/acceso` | Firebase Authentication |
-| `/archivos` | Interfaz de almacenamiento de archivos |
-
----
-
-## 9. Bootstrap
-
-Bootstrap es utilizado para implementar el diseño visual y responsive de la aplicación.
-
-Entre los elementos utilizados se encuentran:
+Se utilizaron, entre otros:
 
 - Navegación.
 - Cards.
 - Formularios.
 - Botones.
-- Tablas.
-- Badges.
-- Alerts.
+- Alertas.
 - Grid responsive.
 - Utilidades de espaciado.
-- Colores y estilos contextuales.
+- Tipografía.
+- Sombras.
+
+La interfaz se adapta a distintos tamaños de pantalla.
 
 ---
 
-# Firebase
-
-## 10. Firestore
-
-Firebase Firestore es utilizado como base de datos en la nube.
-
-Los datos ingresados desde el formulario de registro son almacenados en la colección:
+## 15. Estructura principal del proyecto
 
 ```text
-clientes
+examen-final-react/
+|
+|-- apk/
+|   `-- examen-final-release.apk
+|
+|-- public/
+|
+|-- src/
+|   |-- components/
+|   |   |-- Almacenamiento.jsx
+|   |   |-- Autenticacion.jsx
+|   |   |-- Formulario.jsx
+|   |   |-- ListaProductos.jsx
+|   |   `-- Producto.jsx
+|   |
+|   |-- App.css
+|   |-- App.jsx
+|   |-- firebase.js
+|   |-- index.css
+|   `-- main.jsx
+|
+|-- cordova/
+|   |-- config.xml
+|   |-- package.json
+|   `-- package-lock.json
+|
+|-- .gitignore
+|-- eslint.config.js
+|-- index.html
+|-- package.json
+|-- package-lock.json
+|-- README.md
+`-- vite.config.js
 ```
 
-La aplicación realiza la conexión a Firebase desde:
+El archivo `.env` se mantiene únicamente en el entorno local y no se incorpora al repositorio.
 
-```text
-src/firebase.js
-```
+Los directorios generados por Node, Vite y Cordova tampoco se almacenan en el control de versiones.
 
 ---
 
-## 11. Authentication
+## 16. Configuración para Cordova
 
-Firebase Authentication utiliza el proveedor:
+Para permitir que la compilación de Vite funcione correctamente dentro de Cordova, se configuró Vite utilizando rutas relativas.
 
-```text
-Correo electrónico / Contraseña
+Configuración principal:
+
+```javascript
+export default defineConfig({
+  plugins: [react()],
+  base: './',
+})
 ```
 
-La aplicación permite registrar usuarios, iniciar sesión, detectar sesiones activas y cerrar sesión.
+Además, la navegación utiliza `HashRouter`, evitando dependencias de rutas administradas por un servidor web.
 
 ---
 
-## 12. Storage
+## 17. Preparación de la aplicación Android
 
-La interfaz y las validaciones para la selección de archivos se encuentran implementadas.
+Se creó un proyecto Cordova para empaquetar la aplicación React como aplicación Android.
 
-La operación efectiva de carga queda condicionada a disponer de un bucket de Firebase Storage habilitado.
-
----
-
-# Aplicación Android
-
-## 13. Preparación del proyecto Android
-
-Para generar una versión Android de la aplicación React se utilizó **Apache Cordova**.
-
-Se creó un proyecto Cordova independiente dentro del proyecto principal:
-
-```text
-cordova/
-```
-
-La plataforma utilizada corresponde a:
+La plataforma utilizada es:
 
 ```text
 cordova-android 15.1.0
 ```
 
-El entorno utilizado para la compilación fue:
+Configuración del entorno utilizada:
 
 ```text
-Java JDK: 17
-Gradle: 8.14.2
-Android SDK: instalado
-Android Build Tools: 36.0.0
+JDK 17
+Gradle 8.14.2
+Android Build Tools 36.0.0
 ```
 
----
-
-## 14. Compilación de React para Cordova
-
-Vite fue configurado para generar rutas relativas mediante:
-
-```javascript
-base: './'
-```
-
-Además, la navegación de React utiliza `HashRouter` para permitir su funcionamiento dentro del WebView de Android.
-
-La versión de producción de React se genera mediante:
-
-```bash
-npm run build
-```
-
-Los archivos resultantes se almacenan en:
-
-```text
-dist/
-```
-
-El contenido generado se copia posteriormente al directorio web de Cordova:
-
-```text
-cordova/www/
-```
-
----
-
-## 15. Generación del APK
-
-La plataforma Android fue configurada mediante Cordova y Gradle.
-
-Se verificaron los requisitos mediante:
+La disponibilidad de los requisitos fue verificada mediante:
 
 ```bash
 cordova requirements
 ```
 
-Posteriormente se generó correctamente un APK de depuración mediante:
-
-```bash
-cordova build android
-```
-
-El APK generado se encuentra dentro de la estructura de compilación de Android:
-
-```text
-cordova/platforms/android/app/build/outputs/apk/
-```
-
 ---
 
-## 16. Generación del APK Release
+## 18. Compilación React para Android
 
-Para obtener la versión Release se utilizó el wrapper de Gradle del proyecto Android:
-
-```bash
-gradlew assembleRelease
-```
-
-Este proceso generó:
-
-```text
-app-release-unsigned.apk
-```
-
----
-
-## 17. Firma digital del APK
-
-Para la firma de la aplicación se creó un almacén de claves mediante `keytool`.
-
-Se utilizó:
-
-- Algoritmo RSA.
-- Clave de 2048 bits.
-- Certificado SHA256withRSA.
-- Alias específico para la aplicación.
-
-El archivo de claves privadas se encuentra excluido del repositorio mediante `.gitignore`.
-
-El APK Release fue procesado mediante:
-
-```text
-zipalign
-```
-
-y posteriormente firmado utilizando:
-
-```text
-apksigner
-```
-
-La verificación de la firma produjo el siguiente resultado:
-
-```text
-Verifies
-Verified using v2 scheme (APK Signature Scheme v2): true
-Verified using v3 scheme (APK Signature Scheme v3): true
-Number of signers: 1
-```
-
-El APK final firmado corresponde a:
-
-```text
-examen-final-release.apk
-```
-
----
-
-## 18. Prueba en dispositivo Android
-
-La aplicación fue instalada y probada en un dispositivo Android físico.
-
-Durante las pruebas se verificó correctamente:
-
-- Inicio de la aplicación.
-- Navegación entre las diferentes secciones.
-- Productos.
-- Carrito de compras.
-- Aumento y disminución de cantidades.
-- Eliminación de productos.
-- Formulario y validaciones.
-- Registro de información en Firebase Firestore.
-- Firebase Authentication.
-- Inicio y cierre de sesión.
-- Interfaz de selección y validación de archivos.
-
-La aplicación funcionó correctamente durante las pruebas realizadas en el dispositivo.
-
----
-
-# Estructura del proyecto
-
-## 19. Estructura principal
-
-```text
-examen-final-react/
-│
-├── public/
-│
-├── src/
-│   ├── components/
-│   │   ├── Almacenamiento.jsx
-│   │   ├── Autenticacion.jsx
-│   │   ├── Formulario.jsx
-│   │   ├── ListaProductos.jsx
-│   │   └── Producto.jsx
-│   │
-│   ├── App.css
-│   ├── App.jsx
-│   ├── firebase.js
-│   ├── index.css
-│   └── main.jsx
-│
-├── cordova/
-│   ├── config.xml
-│   ├── package.json
-│   └── www/
-│
-├── .env
-├── .gitignore
-├── package.json
-├── README.md
-└── vite.config.js
-```
-
-> El archivo `.env` y las claves utilizadas para firmar Android no se incluyen en el repositorio.
-
-Los directorios generados automáticamente, como `node_modules`, `dist` y `cordova/platforms`, también pueden ser excluidos del control de versiones y reconstruidos mediante las herramientas correspondientes.
-
----
-
-# Ejecución
-
-## 20. Desarrollo
-
-Para ejecutar la aplicación durante el desarrollo:
-
-```bash
-npm run dev
-```
-
----
-
-## 21. Producción web
-
-Para generar la versión optimizada:
+Primero se genera la versión de producción de React:
 
 ```bash
 npm run build
 ```
 
-El resultado se almacena en:
+El contenido generado en:
 
 ```text
 dist/
 ```
 
----
-
-## 22. Estado del proyecto
-
-Se encuentran implementados y probados:
-
-- Componentes funcionales y componentes de clase.
-- Props.
-- State.
-- `this.setState()`.
-- Eventos.
-- Comunicación entre componentes.
-- Renderizado dinámico mediante `map()`.
-- Formularios.
-- Validaciones.
-- React Router.
-- HashRouter.
-- Bootstrap.
-- Firebase Firestore.
-- Firebase Authentication.
-- Interfaz y validaciones para Firebase Storage.
-- Integración React con Cordova.
-- Configuración Android.
-- Generación de APK.
-- Generación de APK Release.
-- Alineación mediante Zipalign.
-- Firma mediante APK Signer.
-- Verificación de firma.
-- Prueba de la aplicación en dispositivo Android físico.
-
----
-
-## 23. Despliegue web
-
-La aplicación será desplegada utilizando **Netlify**.
-
-Una vez realizado el despliegue, la dirección pública será incorporada en esta sección:
+se copia posteriormente al directorio:
 
 ```text
-URL_NETLIFY
+cordova/www/
 ```
+
+De esta manera, Cordova utiliza la aplicación React compilada como contenido de la aplicación Android.
 
 ---
 
-## 24. Repositorio
+## 19. Generación del APK de prueba
 
-El código fuente del proyecto será almacenado en GitHub.
+Para generar la versión de depuración se utiliza:
+
+```bash
+cordova build android
+```
+
+El proceso genera un APK de depuración dentro de la estructura de compilación de Android.
+
+Esta versión fue instalada y probada en un dispositivo Android físico, verificando el funcionamiento de las distintas secciones de la aplicación.
+
+---
+
+## 20. Generación de la versión Release
+
+La versión Release de Android se generó mediante Gradle:
+
+```bash
+gradlew assembleRelease
+```
+
+Este proceso genera inicialmente un APK Release sin firma.
+
+Posteriormente el archivo se prepara para su firma digital.
+
+---
+
+## 21. Firma digital del APK
+
+Se generó un keystore RSA de 2048 bits para realizar la firma digital de la aplicación.
+
+El APK fue alineado utilizando:
 
 ```text
-URL_GITHUB
+zipalign
 ```
 
-Una vez creado el repositorio se actualizarán tanto esta URL como el comando `git clone` indicado al comienzo de este documento.
+Posteriormente fue firmado utilizando:
+
+```text
+apksigner
+```
+
+Finalmente, la firma fue verificada mediante:
+
+```bash
+apksigner verify --verbose examen-final-release.apk
+```
+
+La verificación confirmó correctamente un firmante y compatibilidad con los esquemas de firma APK v2 y v3.
+
+El archivo keystore utilizado para la firma es privado y se encuentra excluido del repositorio mediante `.gitignore`.
 
 ---
 
-## 25. Consideraciones de seguridad
+## 22. APK Android
 
-Los siguientes archivos no deben ser publicados en el repositorio:
+La versión Release firmada de la aplicación Android se encuentra disponible en el repositorio para su instalación y evaluación.
+
+**Archivo APK:**
+
+```text
+apk/examen-final-release.apk
+```
+
+El APK corresponde a la versión final generada a partir de la aplicación React empaquetada mediante Apache Cordova.
+
+La aplicación fue probada en un dispositivo Android físico, verificando su instalación, ejecución, navegación y funcionamiento de las funcionalidades implementadas.
+
+---
+
+## 23. Pruebas realizadas
+
+La aplicación fue probada durante el desarrollo tanto en navegador web como en un dispositivo Android físico.
+
+Se verificaron las siguientes funcionalidades:
+
+- Visualización del listado de productos.
+- Agregar productos al carrito.
+- Incrementar y disminuir cantidades.
+- Eliminar productos del carrito.
+- Cálculo de cantidades y totales.
+- Validación del formulario.
+- Registro de información en Firestore.
+- Creación de usuarios.
+- Inicio de sesión.
+- Cierre de sesión.
+- Selección y validación de archivos.
+- Navegación entre las distintas secciones.
+- Ejecución de la aplicación mediante APK en Android.
+- Ejecución de la aplicación desplegada en Netlify.
+
+---
+
+## 24. Despliegue en Netlify
+
+La aplicación web se encuentra desplegada públicamente mediante Netlify.
+
+**Aplicación publicada:**
+
+https://preeminent-sherbet-d3d34e.netlify.app/
+
+El despliegue se encuentra conectado al repositorio de GitHub y utiliza la rama:
+
+```text
+main
+```
+
+Configuración de construcción:
+
+```text
+Build command: npm run build
+Publish directory: dist
+```
+
+Las variables de configuración requeridas por Firebase se encuentran configuradas mediante variables de entorno en Netlify.
+
+La aplicación desplegada fue verificada después de su publicación, comprobando su navegación y las funcionalidades implementadas.
+
+---
+
+## 25. Control de versiones
+
+El proyecto utiliza Git para el control de versiones y GitHub como repositorio remoto.
+
+**Repositorio GitHub:**
+
+https://github.com/carlosjor/examen-final-react
+
+La rama principal utilizada es:
+
+```text
+main
+```
+
+Los archivos con información de configuración local, claves privadas y directorios generados se encuentran excluidos mediante `.gitignore`.
+
+---
+
+## 26. Seguridad
+
+El proyecto evita versionar archivos de configuración local, claves privadas, dependencias y directorios generados.
+
+Entre los elementos excluidos se encuentran:
 
 ```text
 .env
 *.keystore
 *.jks
+node_modules/
+dist/
+cordova/node_modules/
+cordova/platforms/
+cordova/plugins/
+cordova/www/
 ```
 
-El archivo `.env` contiene la configuración utilizada por la aplicación para conectarse a Firebase.
+El keystore utilizado para firmar la aplicación Android se mantiene únicamente en el entorno local y no se distribuye junto con el código fuente.
 
-Los archivos `.keystore` y `.jks` corresponden a claves privadas utilizadas para firmar aplicaciones Android y deben mantenerse protegidos.
+La APK Release firmada sí se incorpora al repositorio como archivo de distribución, sin incluir la clave privada utilizada para generar su firma.
+
+---
+
+## 27. Estado del proyecto
+
+Las funcionalidades desarrolladas para la evaluación se encuentran implementadas.
+
+La solución incluye:
+
+- Aplicación React basada en componentes.
+- Comunicación entre componentes mediante props.
+- Renderizado de productos mediante `map()`.
+- Manejo del carrito mediante estado y `this.setState()`.
+- Formulario con validaciones.
+- Persistencia de datos mediante Firebase Firestore.
+- Autenticación mediante Firebase Authentication.
+- Interfaz y validaciones para selección de archivos.
+- Diseño mediante Bootstrap.
+- Navegación mediante React Router.
+- Proyecto Android mediante Apache Cordova.
+- Generación de APK para Android.
+- Firma digital del APK.
+- Verificación de la firma digital.
+- Pruebas en dispositivo Android físico.
+- APK Release firmada disponible para instalación.
+- Repositorio publicado en GitHub.
+- Aplicación web desplegada y probada en Netlify.
 
 ---
 
@@ -575,5 +642,5 @@ Los archivos `.keystore` y `.jks` corresponden a claves privadas utilizadas para
 
 **Carlos Jordan**
 
-Examen Final  
-**Programación de Componentes - IPLACEX**
+Programación de Componentes  
+IPLACEX
